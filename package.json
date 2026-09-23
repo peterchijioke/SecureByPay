@@ -1,0 +1,13 @@
+{
+  "name": "securebypay-fullstack",
+  "version": "1.0.0",
+  "description": "SecureByPay Technical Assessment - Full Stack Application",
+  "scripts": {
+    "server": "npm run dev --prefix backend",
+    "server:start": "npm start --prefix backend",
+    "test": "npm test --prefix backend",
+    "build": "npm run build --prefix backend",
+    "start": "node backend/dist/server.js"
+  },
+  "keywords": ["flutter", "node", "express", "securebypay", "myafrimall"]
+}

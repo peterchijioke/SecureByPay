@@ -1,0 +1,11 @@
+{
+  "name": "Myafrimall",
+  "short_name": "Myafrimall",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#F8F9FC",
+  "theme_color": "#5A65AB",
+  "description": "SecureByPay Technical Test - Myafrimall Logistics & Payment Platform",
+  "orientation": "portrait-primary",
+  "prefer_related_applications": false
+}
