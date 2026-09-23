@@ -109,7 +109,7 @@ function renderGrowthChart(points) {
   const yLevels = [0, 200, 400, 600, 800, 1000];
   ctx.strokeStyle = '#F1F5F9';
   ctx.lineWidth = 1;
-  ctx.font = '11px Inter, sans-serif';
+  ctx.font = '11px "DM Sans", sans-serif';
   ctx.fillStyle = '#94A3B8';
   ctx.textAlign = 'right';
 

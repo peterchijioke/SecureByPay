@@ -4,7 +4,7 @@ import '../constants/app_colors.dart';
 
 class AppTheme {
   static ThemeData get lightTheme {
-    final baseTextTheme = GoogleFonts.interTextTheme();
+    final baseTextTheme = GoogleFonts.dmSansTextTheme();
 
     return ThemeData(
       useMaterial3: true,
