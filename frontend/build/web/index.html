@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Myafrimall | SecureByPay</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- ================= SIGN UP VIEW ================= -->
+  <div id="view-signup" class="auth-container">
+    <div class="auth-form-side">
+      <div class="auth-form-card">
+        <h1 class="auth-title">Create an account</h1>
+        <p class="auth-subtitle">
+          Sign up for Myafrimall and gain unlimited access to shipping to over 300 countries from Nigeria. Do you already have an account? 
+          <a onclick="switchView('login')">Login</a>
+        </p>
+
+        <form onsubmit="handleRegister(event)">
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">First name</label>
+              <input type="text" id="reg-firstname" class="form-input" placeholder="John" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Last name</label>
+              <input type="text" id="reg-lastname" class="form-input" placeholder="Doe" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Email</label>
+            <input type="email" id="reg-email" class="form-input" placeholder="user@example.com" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Phone Number</label>
+            <div class="input-wrapper">
+              <div class="input-phone-prefix">
+                <span>+234</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+              </div>
+              <input type="tel" id="reg-phone" class="form-input phone-input" placeholder="8012345678" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Password</label>
+            <div class="input-wrapper">
+              <input type="password" id="reg-password" class="form-input" placeholder="Enter Password" required>
+              <button type="button" class="toggle-password" aria-label="Toggle password visibility">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                  <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <div style="margin-top: 28px;">
+            <button type="submit" class="btn-primary" style="width: 160px;">Create account</button>
+          </div>
+
+          <p class="auth-footer">
+            By clicking on create account you agree to our <a>privacy policy</a> and <a>terms of use</a>
+          </p>
+        </form>
+      </div>
+    </div>
+
+    <div class="auth-banner-side">
+      <canvas id="signupMapCanvas" class="auth-banner-canvas"></canvas>
+      <div class="auth-banner-content">
+        <h2 class="auth-banner-title">Seamlessly Delivering to Over 300<br>Countries from Nigeria!</h2>
+        <p class="auth-banner-desc">Access global markets with our quick shipping from Nigeria! Fast delivery and easy customs to 300+ countries.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= SIGN IN VIEW ================= -->
+  <div id="view-login" class="auth-container" style="display: none;">
+    <div class="auth-form-side">
+      <div class="auth-form-card">
+        <h1 class="auth-title">Sign in to your account</h1>
+        <p class="auth-subtitle">
+          Log in to Myafrimall to enjoy seamless shipping to over 300 countries right from Nigeria.. Don't have an account yet? 
+          <a onclick="switchView('register')">Sign Up</a>
+        </p>
+
+        <form onsubmit="handleLogin(event)">
+          <div class="form-group">
+            <label class="form-label">Email</label>
+            <input type="email" id="login-email" class="form-input" placeholder="user@example.com" value="user@example.com" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Password</label>
+            <div class="input-wrapper">
+              <input type="password" id="login-password" class="form-input" placeholder="Enter Password" value="Password123!" required>
+              <button type="button" class="toggle-password" aria-label="Toggle password visibility">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                  <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+              </button>
+            </div>
+            <a class="forgot-password-link" onclick="showToast('Password reset link sent to your email!')">Forgot Password?</a>
+          </div>
+
+          <div style="margin-top: 28px;">
+            <button type="submit" class="btn-primary" style="width: 120px;">Login</button>
+          </div>
+
+          <p class="auth-footer">
+            By clicking on create account you agree to our <a>privacy policy</a> and <a>terms of use</a>
+          </p>
+        </form>
+      </div>
+    </div>
+
+    <div class="auth-banner-side">
+      <canvas id="loginMapCanvas" class="auth-banner-canvas"></canvas>
+      <div class="auth-banner-content">
+        <h2 class="auth-banner-title">Effortlessly Track Your Shipments<br>from Nigeria!</h2>
+        <p class="auth-banner-desc">Monitor your shipments from Nigeria! Enjoy swift delivery and seamless customs processing</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= DASHBOARD VIEW ================= -->
+  <div id="view-dashboard" class="dashboard-layout" style="display: none;">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-logo">
+        <div class="logo-badge">M</div>
+        <div class="logo-text">Myafrimall</div>
+      </div>
+
+      <ul class="sidebar-nav">
+        <li class="nav-item active">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="7" height="7"></rect>
+            <rect x="14" y="3" width="7" height="7"></rect>
+            <rect x="14" y="14" width="7" height="7"></rect>
+            <rect x="3" y="14" width="7" height="7"></rect>
+          </svg>
+          <span>Dashboard</span>
+        </li>
+        <li class="nav-item">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="1" y="3" width="15" height="13"></rect>
+            <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
+            <circle cx="5.5" cy="18.5" r="2.5"></circle>
+            <circle cx="18.5" cy="18.5" r="2.5"></circle>
+          </svg>
+          <span>Shipments</span>
+        </li>
+        <li class="nav-item">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="2" y1="12" x2="22" y2="12"></line>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+          </svg>
+          <span>Our Services</span>
+        </li>
+        <li class="nav-item">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+          </svg>
+          <span>Notifications</span>
+        </li>
+        <li class="nav-item">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
+            <line x1="1" y1="10" x2="23" y2="10"></line>
+          </svg>
+          <span>Wallet</span>
+        </li>
+        <li class="nav-item">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="22" y1="12" x2="18" y2="12"></line>
+            <line x1="6" y1="12" x2="2" y2="12"></line>
+            <line x1="12" y1="6" x2="12" y2="2"></line>
+            <line x1="12" y1="22" x2="12" y2="18"></line>
+          </svg>
+          <span>My Addresses</span>
+        </li>
+        <li class="nav-item">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="16"></line>
+            <line x1="8" y1="12" x2="16" y2="12"></line>
+          </svg>
+          <span>Invite & Earn</span>
+        </li>
+        <li class="nav-item">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <circle cx="12" cy="12" r="4"></circle>
+            <line x1="4.93" y1="4.93" x2="9.17" y2="9.17"></line>
+            <line x1="14.83" y1="14.83" x2="19.07" y2="19.07"></line>
+            <line x1="14.83" y1="9.17" x2="19.07" y2="4.93"></line>
+            <line x1="4.93" y1="19.07" x2="9.17" y2="14.83"></line>
+          </svg>
+          <span>Help Center</span>
+        </li>
+      </ul>
+
+      <div class="sidebar-footer">
+        <div class="user-profile-row">
+          <div class="user-avatar" id="sidebar-user-avatar">B</div>
+          <div>
+            <div class="user-name" id="sidebar-user-name">Bunmi Tanny</div>
+            <div class="user-email" id="sidebar-user-email">user@example.com</div>
+          </div>
+        </div>
+        <button class="logout-btn" onclick="state.token=null; state.user=null; localStorage.clear(); switchView('login'); showToast('Logged out');">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+            <polyline points="16 17 21 12 16 7"></polyline>
+            <line x1="21" y1="12" x2="9" y2="12"></line>
+          </svg>
+          <span>Logout</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+      <div class="page-header">
+        <h2 class="page-title">Invite & Earn</h2>
+        <p class="page-subtitle">Keep track of your addresses, location updates, Edit, Delete, Update and see all your saved addresses</p>
+      </div>
+
+      <!-- Promo Banner -->
+      <div class="promo-banner">
+        <div class="promo-title">
+          KEEP UP WITH YOUR<br>BUSINESS NEEDS
+        </div>
+        <div class="promo-illustration">
+          <div class="globe-icon-circle">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="2" y1="12" x2="22" y2="12"></line>
+              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+            </svg>
+          </div>
+        </div>
+      </div>
+      <div class="carousel-dots">
+        <div class="carousel-dot"></div>
+        <div class="carousel-dot active"></div>
+        <div class="carousel-dot"></div>
+      </div>
+
+      <!-- Overview Section -->
+      <div class="section-header">
+        <h3 class="section-title">Overview</h3>
+        <div class="filter-dropdown">
+          <span>This Month</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </div>
+      </div>
+
+      <div class="overview-grid">
+        <!-- Balance Card -->
+        <div class="balance-card">
+          <div class="balance-label">Your Balance</div>
+          <div class="balance-value" id="overview-balance">₦3,000,000.28</div>
+          <button class="fund-wallet-btn" onclick="openFundWalletModal()">Fund Wallet</button>
+        </div>
+
+        <!-- Total Shipment -->
+        <div class="stat-card">
+          <div class="stat-card-header">
+            <div class="stat-icon" style="background-color: #FEF3C7; color: #D97706;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="1" y="3" width="15" height="13"></rect>
+                <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
+                <circle cx="5.5" cy="18.5" r="2.5"></circle>
+                <circle cx="18.5" cy="18.5" r="2.5"></circle>
+              </svg>
+            </div>
+            <span class="stat-card-title">Total Shipment</span>
+          </div>
+          <div class="stat-value-row">
+            <span class="stat-number" id="overview-total-shipments">34</span>
+            <span class="stat-growth-tag">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <line x1="12" y1="19" x2="12" y2="5"></line>
+                <polyline points="5 12 12 5 19 12"></polyline>
+              </svg>
+              90%
+            </span>
+          </div>
+          <div class="stat-footer">Vs last month: 4</div>
+        </div>
+
+        <!-- Total Exports -->
+        <div class="stat-card">
+          <div class="stat-card-header">
+            <div class="stat-icon" style="background-color: #D1FAE5; color: #059669;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="12" y1="19" x2="12" y2="5"></line>
+                <polyline points="5 12 12 5 19 12"></polyline>
+              </svg>
+            </div>
+            <span class="stat-card-title">Total Exports</span>
+          </div>
+          <div class="stat-value-row">
+            <span class="stat-number" id="overview-total-exports">34</span>
+            <span class="stat-growth-tag">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <line x1="12" y1="19" x2="12" y2="5"></line>
+                <polyline points="5 12 12 5 19 12"></polyline>
+              </svg>
+              90%
+            </span>
+          </div>
+          <div class="stat-footer">Vs last month: 4</div>
+        </div>
+
+        <!-- Total Import -->
+        <div class="stat-card">
+          <div class="stat-card-header">
+            <div class="stat-icon" style="background-color: #CFFAFE; color: #0891B2;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <polyline points="19 12 12 19 5 12"></polyline>
+              </svg>
+            </div>
+            <span class="stat-card-title">Total Import</span>
+          </div>
+          <div class="stat-value-row">
+            <span class="stat-number" id="overview-total-imports">34</span>
+            <span class="stat-growth-tag">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <line x1="12" y1="19" x2="12" y2="5"></line>
+                <polyline points="5 12 12 5 19 12"></polyline>
+              </svg>
+              90%
+            </span>
+          </div>
+          <div class="stat-footer">Vs last month: 4</div>
+        </div>
+      </div>
+
+      <!-- Recent Shipment Header -->
+      <div class="section-header">
+        <h3 class="section-title">Recent shipment</h3>
+        <span style="font-size: 13px; font-weight: 600; color: var(--text-secondary); cursor: pointer;">See All</span>
+      </div>
+
+      <!-- Company Growth Chart -->
+      <div class="chart-card">
+        <div class="chart-header">
+          <div class="chart-title">Company Growth</div>
+          <div class="period-toggles">
+            <button class="period-btn active" data-period="year" onclick="loadGrowthData('year')">Year</button>
+            <button class="period-btn" data-period="month" onclick="loadGrowthData('month')">Month</button>
+            <button class="period-btn" data-period="week" onclick="loadGrowthData('week')">Week</button>
+          </div>
+        </div>
+        <div class="chart-canvas-wrapper">
+          <canvas id="growthCanvas"></canvas>
+        </div>
+      </div>
+
+      <!-- Shipment Items List -->
+      <div id="shipments-list"></div>
+    </main>
+  </div>
+
+  <!-- Fund Wallet Modal -->
+  <div class="modal-overlay" id="fund-modal">
+    <div class="modal-card">
+      <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 12px;">Fund Wallet</h3>
+      <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 16px;">Enter the amount you would like to deposit to your wallet:</p>
+      <div class="form-group">
+        <div class="input-wrapper">
+          <span style="position: absolute; left: 14px; font-weight: 600;">₦</span>
+          <input type="number" id="fund-amount-input" class="form-input" style="padding-left: 32px;" value="50000" min="1000">
+        </div>
+      </div>
+      <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 24px;">
+        <button class="btn-view-more" onclick="closeFundWalletModal()">Cancel</button>
+        <button class="btn-primary" style="height: 38px; padding: 0 20px;" onclick="submitFundWallet()">Fund Now</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Shipment View More Modal -->
+  <div class="modal-overlay" id="shipment-modal">
+    <div class="modal-card">
+      <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 8px;">Shipment Details</h3>
+      <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 16px;">Tracking ID: <span id="modal-shipment-id" style="color: var(--primary); font-weight: 600;"></span></p>
+      <div id="modal-shipment-body" style="font-size: 13.5px; line-height: 1.6; color: var(--text-primary);"></div>
+      <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
+        <button class="btn-view-more" onclick="closeShipmentModal()">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="toast-msg"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
