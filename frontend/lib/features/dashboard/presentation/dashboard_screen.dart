@@ -10,6 +10,7 @@ import 'widgets/growth_chart.dart';
 import 'widgets/overview_card.dart';
 import 'widgets/promo_banner.dart';
 import 'widgets/sidebar.dart';
+import '../../../shared/widgets/app_icons.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({Key? key}) : super(key: key);
@@ -638,7 +639,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 count: _overview?.totalShipmentsCount ?? 34,
                 growth: _overview?.totalShipmentsGrowth ?? 90,
                 vsLastMonth: _overview?.totalShipmentsVsLastMonth ?? 4,
-                icon: Icons.local_shipping_outlined,
+                customIcon: AppIcons.shipments(color: const Color(0xFFD97706), size: 20),
                 iconColor: const Color(0xFFD97706),
                 iconBgColor: const Color(0xFFFEF3C7),
               ),
@@ -651,7 +652,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 count: _overview?.totalExportsCount ?? 34,
                 growth: _overview?.totalExportsGrowth ?? 90,
                 vsLastMonth: _overview?.totalExportsVsLastMonth ?? 4,
-                icon: Icons.arrow_upward_rounded,
+                customIcon: AppIcons.exportsArrow(color: const Color(0xFF059669), size: 20),
                 iconColor: const Color(0xFF059669),
                 iconBgColor: const Color(0xFFD1FAE5),
               ),
@@ -664,7 +665,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 count: _overview?.totalImportsCount ?? 34,
                 growth: _overview?.totalImportsGrowth ?? 90,
                 vsLastMonth: _overview?.totalImportsVsLastMonth ?? 4,
-                icon: Icons.arrow_downward_rounded,
+                customIcon: AppIcons.importsArrow(color: const Color(0xFF0891B2), size: 20),
                 iconColor: const Color(0xFF0891B2),
                 iconBgColor: const Color(0xFFCFFAFE),
               ),
@@ -687,7 +688,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     count: _overview?.totalShipmentsCount ?? 34,
                     growth: _overview?.totalShipmentsGrowth ?? 90,
                     vsLastMonth: _overview?.totalShipmentsVsLastMonth ?? 4,
-                    icon: Icons.local_shipping_outlined,
+                    customIcon: AppIcons.shipments(color: const Color(0xFFD97706), size: 20),
                     iconColor: const Color(0xFFD97706),
                     iconBgColor: const Color(0xFFFEF3C7),
                   ),
@@ -699,7 +700,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     count: _overview?.totalExportsCount ?? 34,
                     growth: _overview?.totalExportsGrowth ?? 90,
                     vsLastMonth: _overview?.totalExportsVsLastMonth ?? 4,
-                    icon: Icons.arrow_upward_rounded,
+                    customIcon: AppIcons.exportsArrow(color: const Color(0xFF059669), size: 20),
                     iconColor: const Color(0xFF059669),
                     iconBgColor: const Color(0xFFD1FAE5),
                   ),
@@ -712,7 +713,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               count: _overview?.totalImportsCount ?? 34,
               growth: _overview?.totalImportsGrowth ?? 90,
               vsLastMonth: _overview?.totalImportsVsLastMonth ?? 4,
-              icon: Icons.arrow_downward_rounded,
+              customIcon: AppIcons.importsArrow(color: const Color(0xFF0891B2), size: 20),
               iconColor: const Color(0xFF0891B2),
               iconBgColor: const Color(0xFFCFFAFE),
             ),

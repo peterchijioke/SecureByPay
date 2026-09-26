@@ -98,7 +98,8 @@ class StatMetricCard extends StatelessWidget {
   final int count;
   final double growth;
   final int vsLastMonth;
-  final IconData icon;
+  final IconData? icon;
+  final Widget? customIcon;
   final Color iconColor;
   final Color iconBgColor;
 
@@ -108,7 +109,8 @@ class StatMetricCard extends StatelessWidget {
     required this.count,
     required this.growth,
     required this.vsLastMonth,
-    required this.icon,
+    this.icon,
+    this.customIcon,
     required this.iconColor,
     required this.iconBgColor,
   }) : super(key: key);
@@ -143,7 +145,10 @@ class StatMetricCard extends StatelessWidget {
                   shape: BoxShape.circle,
                   color: iconBgColor,
                 ),
-                child: Icon(icon, size: 20, color: iconColor),
+                child: Center(
+                  child: customIcon ??
+                      (icon != null ? Icon(icon, size: 20, color: iconColor) : const SizedBox.shrink()),
+                ),
               ),
               const SizedBox(width: 10),
               Expanded(
