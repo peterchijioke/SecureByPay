@@ -187,7 +187,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               height: 1.5,
                             ),
                             children: const [
-                              TextSpan(text: 'By clicking on login you agree to our '),
+                              TextSpan(text: 'By clicking on create account you agree to our '),
                               TextSpan(
                                 text: 'privacy policy',
                                 style: TextStyle(
