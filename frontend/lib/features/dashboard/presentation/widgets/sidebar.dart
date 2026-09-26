@@ -1,170 +1,132 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/network/api_service.dart';
+import '../../../../shared/widgets/app_icons.dart';
+
+class _NavItem {
+  final String title;
+  final String svgAsset; // empty = use Material icon
+  const _NavItem(this.title, this.svgAsset);
+}
+
+const _items = [
+  _NavItem('Dashboard', 'assets/icons/dashboard.svg'),
+  _NavItem('Shipments', 'assets/icons/ship.svg'),
+  _NavItem('Our Services', 'assets/icons/globe.svg'),
+  _NavItem('Notifications', 'assets/icons/bell.svg'),
+  _NavItem('Wallet', 'assets/icons/credit-card.svg'),
+  _NavItem('My Addresses', 'assets/icons/locate-fixed.svg'),
+  _NavItem('Invite & Earn', 'assets/icons/badge-dollar-sign.svg'),
+  _NavItem('Help Center', 'assets/icons/hand-helping.svg'),
+];
 
 class DashboardSidebar extends StatelessWidget {
   final String activeRoute;
   final Function(String)? onSelectRoute;
+  // kept for compat
+  final bool showHeader;
 
   const DashboardSidebar({
     Key? key,
     this.activeRoute = 'Dashboard',
     this.onSelectRoute,
+    this.showHeader = true,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final user = ApiService().currentUser;
-    final userName = user?.fullName.isNotEmpty == true ? user!.fullName : 'Bunmi Tanny';
+    final firstName = user?.firstName ?? 'Firstname';
+    final lastName = user?.lastName ?? 'Lastname';
+    final email = user?.email ?? 'user@example.com';
+    final initials = firstName.isNotEmpty ? firstName[0].toUpperCase() : 'F';
 
     return Container(
-      width: 240,
+      width: 230,
       decoration: const BoxDecoration(
         color: Colors.white,
-        border: Border(
-          right: BorderSide(color: AppColors.border, width: 1),
-        ),
+        border: Border(right: BorderSide(color: Color(0xFFEAECF0), width: 1)),
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(height: 24),
-          // Logo
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
-            child: Row(
-              children: [
-                Container(
-                  width: 32,
-                  height: 32,
-                  decoration: BoxDecoration(
-                    color: AppColors.primary,
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: const Center(
-                    child: Text(
-                      'M',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 10),
-                const Text(
-                  'Myafrimall',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.textPrimary,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 32),
+          // ── Sidebar Header (empty spacing matching Figma design) ───────
+          const SizedBox(height: 80),
 
-          // Nav Items
+          // ── Nav (flex:1, scrollable) ──────────────────────────────────
           Expanded(
             child: ListView(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              children: [
-                _buildNavItem(
-                  title: 'Dashboard',
-                  icon: Icons.grid_view_rounded,
-                  isActive: activeRoute == 'Dashboard',
-                ),
-                const SizedBox(height: 6),
-                _buildNavItem(
-                  title: 'Shipments',
-                  icon: Icons.local_shipping_outlined,
-                  isActive: activeRoute == 'Shipments',
-                ),
-                const SizedBox(height: 6),
-                _buildNavItem(
-                  title: 'Our Services',
-                  icon: Icons.language_rounded,
-                  isActive: activeRoute == 'Our Services',
-                ),
-                const SizedBox(height: 6),
-                _buildNavItem(
-                  title: 'Notifications',
-                  icon: Icons.notifications_none_rounded,
-                  isActive: activeRoute == 'Notifications',
-                ),
-                const SizedBox(height: 6),
-                _buildNavItem(
-                  title: 'Wallet',
-                  icon: Icons.credit_card_rounded,
-                  isActive: activeRoute == 'Wallet',
-                ),
-                const SizedBox(height: 6),
-                _buildNavItem(
-                  title: 'My Addresses',
-                  icon: Icons.gps_fixed_rounded,
-                  isActive: activeRoute == 'My Addresses',
-                ),
-                const SizedBox(height: 6),
-                _buildNavItem(
-                  title: 'Invite & Earn',
-                  icon: Icons.monetization_on_outlined,
-                  isActive: activeRoute == 'Invite & Earn',
-                ),
-                const SizedBox(height: 6),
-                _buildNavItem(
-                  title: 'Help Center',
-                  icon: Icons.headset_mic_outlined,
-                  isActive: activeRoute == 'Help Center',
-                ),
-              ],
+              padding: const EdgeInsets.fromLTRB(10, 16, 10, 8),
+              children: _items.map((item) {
+                final isActive = activeRoute == item.title;
+                return _NavTile(
+                  item: item,
+                  isActive: isActive,
+                  onTap: () => onSelectRoute?.call(item.title),
+                );
+              }).toList(),
             ),
           ),
 
-          // User row & Logout
+          // ── Footer: user + logout ──────────────────────────────────────
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+            padding: const EdgeInsets.fromLTRB(12, 14, 12, 16),
             decoration: const BoxDecoration(
               border: Border(
-                top: BorderSide(color: AppColors.borderLight, width: 1),
+                top: BorderSide(color: Color(0xFFEAECF0), width: 1),
               ),
             ),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
                   children: [
-                    CircleAvatar(
-                      radius: 18,
-                      backgroundColor: const Color(0xFFD6C7B2),
-                      child: Text(
-                        userName.isNotEmpty ? userName[0].toUpperCase() : 'U',
-                        style: const TextStyle(
-                          color: Colors.brown,
-                          fontWeight: FontWeight.bold,
+                    // Avatar with gradient (matches .user-avatar CSS)
+                    Container(
+                      width: 36,
+                      height: 36,
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [Color(0xFFC4956B), Color(0xFFA0724A)],
+                        ),
+                      ),
+                      child: Center(
+                        child: Text(
+                          initials,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w700,
+                            fontSize: 14,
+                          ),
                         ),
                       ),
                     ),
-                    const SizedBox(width: 12),
+                    const SizedBox(width: 10),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            userName,
+                            '$firstName\n$lastName',
                             style: const TextStyle(
-                              fontSize: 13,
+                              fontSize: 12,
                               fontWeight: FontWeight.w600,
-                              color: AppColors.textPrimary,
+                              color: Color(0xFF1E293B),
+                              height: 1.25,
                             ),
-                            maxLines: 1,
+                            maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                           ),
+                          const SizedBox(height: 1),
                           Text(
-                            user?.email ?? 'user@example.com',
+                            email,
                             style: const TextStyle(
-                              fontSize: 11,
-                              color: AppColors.textMuted,
+                              fontSize: 10.5,
+                              color: Color(0xFF94A3B8),
                             ),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
@@ -174,31 +136,26 @@ class DashboardSidebar extends StatelessWidget {
                     ),
                   ],
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: 12),
+                // Logout button
                 InkWell(
                   onTap: () {
                     ApiService().logout();
-                    Navigator.pushReplacementNamed(context, '/login');
+                    context.go('/login');
                   },
-                  borderRadius: BorderRadius.circular(8),
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    padding: const EdgeInsets.symmetric(vertical: 6),
                     child: Row(
-                      children: const [
-                        Icon(
-                          Icons.logout_rounded,
-                          size: 18,
-                          color: AppColors.textSecondary,
-                        ),
-                        SizedBox(width: 10),
-                        Text(
-                          'Logout',
-                          style: TextStyle(
-                            fontSize: 13,
-                            fontWeight: FontWeight.w500,
-                            color: AppColors.textSecondary,
-                          ),
-                        ),
+                      children: [
+                        const Icon(Icons.logout_rounded,
+                            size: 16, color: Color(0xFF64748B)),
+                        const SizedBox(width: 8),
+                        const Text('Logout',
+                            style: TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w500,
+                              color: Color(0xFF64748B),
+                            )),
                       ],
                     ),
                   ),
@@ -210,32 +167,72 @@ class DashboardSidebar extends StatelessWidget {
       ),
     );
   }
+}
 
-  Widget _buildNavItem({
-    required String title,
-    required IconData icon,
-    required bool isActive,
-  }) {
-    return Container(
-      decoration: BoxDecoration(
-        color: isActive ? AppColors.sidebarActive : Colors.transparent,
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: ListTile(
-        onTap: () => onSelectRoute?.call(title),
-        dense: true,
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
-        leading: Icon(
-          icon,
-          size: 20,
-          color: isActive ? Colors.white : AppColors.textSecondary,
-        ),
-        title: Text(
-          title,
-          style: TextStyle(
-            fontSize: 13,
-            fontWeight: isActive ? FontWeight.w600 : FontWeight.w500,
-            color: isActive ? Colors.white : AppColors.textSecondary,
+class _NavTile extends StatelessWidget {
+  final _NavItem item;
+  final bool isActive;
+  final VoidCallback onTap;
+
+  const _NavTile(
+      {required this.item, required this.isActive, required this.onTap});
+
+  Widget _iconFor(String title, Color color) {
+    switch (title) {
+      case 'Dashboard':
+        return AppIcons.dashboard(color: color);
+      case 'Shipments':
+        return AppIcons.shipments(color: color);
+      case 'Our Services':
+        return AppIcons.services(color: color);
+      case 'Notifications':
+        return AppIcons.notifications(color: color);
+      case 'Wallet':
+        return AppIcons.wallet(color: color);
+      case 'My Addresses':
+        return AppIcons.addresses(color: color);
+      case 'Invite & Earn':
+        return AppIcons.inviteEarn(color: color);
+      case 'Help Center':
+        return AppIcons.helpCenter(color: color);
+      default:
+        return AppIcons.dashboard(color: color);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final iconColor = isActive ? Colors.white : const Color(0xFF64748B);
+
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(8),
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 11),
+            decoration: BoxDecoration(
+              color:
+                  isActive ? const Color(0xFF1E243A) : Colors.transparent,
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Row(
+              children: [
+                _iconFor(item.title, iconColor),
+                const SizedBox(width: 10),
+                Text(
+                  item.title,
+                  style: TextStyle(
+                    fontSize: 12.5,
+                    fontWeight:
+                        isActive ? FontWeight.w600 : FontWeight.w500,
+                    color: isActive ? Colors.white : const Color(0xFF64748B),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

@@ -19,8 +19,6 @@ class GrowthChart extends StatefulWidget {
 }
 
 class _GrowthChartState extends State<GrowthChart> {
-  int? _hoveredIndex;
-
   @override
   Widget build(BuildContext context) {
     return Container(

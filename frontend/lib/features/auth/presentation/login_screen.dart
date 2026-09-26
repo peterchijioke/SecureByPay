@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_strings.dart';
 import '../../../core/network/api_service.dart';
@@ -45,7 +46,7 @@ class _LoginScreenState extends State<LoginScreen> {
           backgroundColor: AppColors.primary,
         ),
       );
-      Navigator.pushReplacementNamed(context, '/dashboard');
+      context.go('/dashboard');
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
@@ -100,12 +101,12 @@ class _LoginScreenState extends State<LoginScreen> {
                               AppStrings.signInSubtitle,
                               style: TextStyle(
                                 fontSize: 13,
-                                color: AppColors.textSecondary.withOpacity(0.9),
+                                color: AppColors.textSecondary.withValues(alpha: 0.9),
                                 height: 1.4,
                               ),
                             ),
                             GestureDetector(
-                              onTap: () => Navigator.pushReplacementNamed(context, '/register'),
+                              onTap: () => context.go('/register'),
                               child: const Text(
                                 'Sign Up',
                                 style: TextStyle(
