@@ -35,10 +35,12 @@ class DashboardSidebar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final user = ApiService().currentUser;
-    final firstName = user?.firstName ?? 'Firstname';
-    final lastName = user?.lastName ?? 'Lastname';
-    final email = user?.email ?? 'user@example.com';
-    final initials = firstName.isNotEmpty ? firstName[0].toUpperCase() : 'F';
+    final firstName = user?.firstName ?? '';
+    final lastName = user?.lastName ?? '';
+    final email = user?.email ?? '';
+    final initials = firstName.isNotEmpty
+        ? firstName[0].toUpperCase()
+        : (email.isNotEmpty ? email[0].toUpperCase() : 'U');
 
     return Container(
       width: 230,

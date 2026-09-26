@@ -17,9 +17,8 @@ class DashboardHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final user = ApiService().currentUser;
-    final userName =
-        user?.fullName.isNotEmpty == true ? user!.fullName : 'Bunmi Tanny';
-    final userEmail = user?.email ?? 'user@example.com';
+    final userName = user?.fullName ?? '';
+    final userEmail = user?.email ?? '';
 
     return Container(
       height: height,

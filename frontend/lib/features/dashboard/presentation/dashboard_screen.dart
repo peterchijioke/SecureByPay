@@ -90,15 +90,34 @@ class _DashboardScreenState extends State<DashboardScreen> {
           _isLoading = false;
         });
       }
-    } catch (_) {
-      if (mounted) setState(() => _isLoading = false);
+    } catch (e) {
+      if (mounted) {
+        setState(() => _isLoading = false);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to load dashboard data: ${e.toString().replaceAll('Exception: ', '')}'),
+            backgroundColor: Colors.redAccent,
+          ),
+        );
+      }
     }
   }
 
   Future<void> _handlePeriodChange(String period) async {
     setState(() => _selectedGrowthPeriod = period);
-    final pts = await _api.getGrowth(period);
-    if (mounted) setState(() => _growthPoints = pts);
+    try {
+      final pts = await _api.getGrowth(period);
+      if (mounted) setState(() => _growthPoints = pts);
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to load growth points: ${e.toString().replaceAll('Exception: ', '')}'),
+            backgroundColor: Colors.redAccent,
+          ),
+        );
+      }
+    }
   }
 
   Future<void> _handlePayShipment(ShipmentModel shipment) async {
