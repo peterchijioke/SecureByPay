@@ -74,7 +74,6 @@ class _LoginScreenState extends State<LoginScreen> {
         children: [
           Row(
         children: [
-          // Left: Form Area
           Expanded(
             flex: isDesktop ? 6 : 10,
             child: Center(
@@ -126,7 +125,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         const SizedBox(height: 36),
 
-                        // Email
                         CustomTextField(
                           label: 'Email',
                           hintText: 'user@example.com',
@@ -136,7 +134,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         const SizedBox(height: 20),
 
-                        // Password
                         CustomTextField(
                           label: 'Password',
                           hintText: 'Enter Password',
@@ -146,7 +143,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         const SizedBox(height: 12),
 
-                        // Forgot Password Link
                         Align(
                           alignment: Alignment.centerLeft,
                           child: TextButton(
@@ -174,7 +170,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         const SizedBox(height: 28),
 
-                        // Login Button
                         CustomButton(
                           text: 'Login',
                           onPressed: _handleLogin,
@@ -184,7 +179,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         const SizedBox(height: 24),
 
-                        // Footer
                         RichText(
                           text: TextSpan(
                             style: TextStyle(
@@ -220,7 +214,6 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
           ),
 
-          // Right: Banner Side (Desktop/Tablet)
           if (isDesktop)
             const Expanded(
               flex: 5,
@@ -232,7 +225,6 @@ class _LoginScreenState extends State<LoginScreen> {
         ],
       ),
 
-          // Activity overlay — appears on top while logging in
           if (_isLoading)
             AnimatedOpacity(
               opacity: _isLoading ? 1.0 : 0.0,

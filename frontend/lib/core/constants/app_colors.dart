@@ -1,28 +1,23 @@
 import 'package:flutter/material.dart';
 
 class AppColors {
-  // Brand Colors
   static const Color primary = Color(0xFF5A65AB); // Figma primary
   static const Color primaryDark = Color(0xFF48518E);
   static const Color primaryLight = Color(0xFFEEF0FA);
 
-  // Backgrounds & Surfaces
   static const Color background = Color(0xFFF8F9FC);
   static const Color surface = Colors.white;
   static const Color sidebarActive = Color(0xFF1E243A);
   static const Color bannerBackground = Color(0xFF1B233D);
 
-  // Text Colors
   static const Color textPrimary = Color(0xFF1E293B);
   static const Color textSecondary = Color(0xFF64748B);
   static const Color textMuted = Color(0xFF94A3B8);
   static const Color textLink = Color(0xFF4361EE);
 
-  // Borders & Dividers
   static const Color border = Color(0xFFE2E8F0);
   static const Color borderLight = Color(0xFFF1F5F9);
 
-  // Status & Badges
   static const Color badgeInTransitBg = Color(0xFFFFF0E6);
   static const Color badgeInTransitText = Color(0xFFEA7A24);
 
@@ -35,7 +30,6 @@ class AppColors {
   static const Color tagPositiveBg = Color(0xFFE8F8F0);
   static const Color tagPositiveText = Color(0xFF10B981);
 
-  // Stat card icon backgrounds
   static const Color statShipmentIconBg = Color(0xFFFEF3C7);
   static const Color statShipmentIcon = Color(0xFFD97706);
 

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../../shared/widgets/dotted_world_map.dart';
 
-/// Replicates CSS: .auth-banner-side, .auth-banner-canvas, .auth-banner-title, .auth-banner-desc
 class AuthBanner extends StatelessWidget {
   final String title;
   final String subtitle;
@@ -18,7 +17,6 @@ class AuthBanner extends StatelessWidget {
       color: const Color(0xFF5A65AB), // var(--primary)
       child: Stack(
         children: [
-          // Dotted World Map canvas covering entire banner
           Positioned.fill(
             child: CustomPaint(
               painter: DottedWorldMapPainter(
@@ -27,7 +25,6 @@ class AuthBanner extends StatelessWidget {
             ),
           ),
 
-          // Content aligned to bottom: padding: 64px 56px
           Positioned(
             left: 0,
             right: 0,

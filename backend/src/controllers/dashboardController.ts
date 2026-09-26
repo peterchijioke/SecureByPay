@@ -50,7 +50,6 @@ export class DashboardController {
         return;
       }
 
-      // Coerce amount to number before parsing (body may send it as a string)
       const rawBody = { amount: Number(req.body.amount) };
       const parsed = fundWalletSchema.safeParse(rawBody);
       if (!parsed.success) {

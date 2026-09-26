@@ -1,10 +1,5 @@
 import 'package:flutter/material.dart';
 
-/// Promo banner matching Figma design:
-/// - Background: banner-bg.png (dark navy blue with diagonal stripes)
-/// - Right side: earth-boxes graphic (globe surrounded by cardboard boxes)
-/// - Left side: "KEEP UP WITH YOUR\nBUSINESS NEEDS" in bold white
-/// - Bottom: 3 carousel dots
 class PromoBanner extends StatelessWidget {
   const PromoBanner({Key? key}) : super(key: key);
 
@@ -20,7 +15,6 @@ class PromoBanner extends StatelessWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            // ── Banner ──────────────────────────────────────────────────────
             Container(
               height: bannerHeight,
               decoration: BoxDecoration(
@@ -41,7 +35,6 @@ class PromoBanner extends StatelessWidget {
               clipBehavior: Clip.hardEdge,
               child: Stack(
                 children: [
-                  // Text on the left
                   Positioned(
                     left: horizontalPadding,
                     top: 0,
@@ -63,7 +56,6 @@ class PromoBanner extends StatelessWidget {
                     ),
                   ),
 
-                  // Earth and cardboard boxes on the right
                   Positioned(
                     right: isCompact ? 12 : 24,
                     top: isCompact ? 6 : 10,
@@ -81,7 +73,6 @@ class PromoBanner extends StatelessWidget {
               ),
             ),
 
-            // ── Carousel dots ────────────────────────────────────────────────
             Padding(
               padding: const EdgeInsets.only(top: 10, bottom: 24),
               child: Row(

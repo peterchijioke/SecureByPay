@@ -27,7 +27,6 @@ class ApiService {
         if (_token != null) 'Authorization': 'Bearer $_token',
       };
 
-  // Auth: Register — accepts a typed DTO
   Future<UserModel> register(RegisterRequestDto dto) async {
     try {
       final response = await http.post(
@@ -48,7 +47,6 @@ class ApiService {
     } catch (e) {
       if (e.toString().contains('Failed to register') ||
           e.toString().contains('already exists')) rethrow;
-      // Demo fallback if network is unreachable
       _token = 'demo_token_${DateTime.now().millisecondsSinceEpoch}';
       currentUser = UserModel(
         id: 'usr-demo',
@@ -62,7 +60,6 @@ class ApiService {
     }
   }
 
-  // Auth: Login — accepts a typed DTO
   Future<UserModel> login(LoginRequestDto dto) async {
     try {
       final response = await http.post(
@@ -83,7 +80,6 @@ class ApiService {
     } catch (e) {
       if (e.toString().contains('Invalid') ||
           e.toString().contains('Failed to sign in')) rethrow;
-      // Demo fallback
       _token = 'demo_token_123';
       currentUser = UserModel(
         id: 'usr-1',
@@ -97,8 +93,6 @@ class ApiService {
     }
   }
 
-  /// Logs out the current user. Calls POST /auth/logout to revoke the token
-  /// server-side, then clears local state.
   Future<void> logout() async {
     try {
       if (_token != null) {
@@ -108,14 +102,12 @@ class ApiService {
         );
       }
     } catch (_) {
-      // Swallow network errors — always clear local state
     } finally {
       _token = null;
       currentUser = null;
     }
   }
 
-  /// Refreshes the JWT token. Calls POST /auth/refresh and updates the stored token.
   Future<UserModel?> refreshToken() async {
     try {
       final response = await http.post(
@@ -132,7 +124,6 @@ class ApiService {
     return currentUser;
   }
 
-  // Dashboard: Overview
   Future<OverviewMetrics> getOverview() async {
     try {
       final response = await http.get(
@@ -145,7 +136,6 @@ class ApiService {
       }
     } catch (_) {}
 
-    // Fallback default
     return OverviewMetrics(
       balance: currentUser?.walletBalance ?? 3000000.28,
       currency: 'NGN',
@@ -161,7 +151,6 @@ class ApiService {
     );
   }
 
-  // Dashboard: Growth curve
   Future<List<GrowthPoint>> getGrowth(String period) async {
     try {
       final response = await http.get(
@@ -191,7 +180,6 @@ class ApiService {
     ];
   }
 
-  // Shipments: List
   Future<List<ShipmentModel>> getShipments() async {
     try {
       final response = await http.get(
@@ -248,7 +236,6 @@ class ApiService {
     ];
   }
 
-  // Shipments: Pay
   Future<ShipmentModel> payShipment(String id) async {
     try {
       final response = await http.post(
@@ -276,7 +263,6 @@ class ApiService {
     );
   }
 
-  // Wallet: Fund
   Future<double> fundWallet(double amount) async {
     try {
       final response = await http.post(

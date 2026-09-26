@@ -12,7 +12,6 @@ import type {
 export class ShipmentsController {
   static getShipments(req: AuthenticatedRequest, res: Response, next: NextFunction): void {
     try {
-      // Validate & parse query params
       const parsed = shipmentsQuerySchema.safeParse(req.query);
       if (!parsed.success) {
         const errors = formatZodErrors(parsed.error);
@@ -24,7 +23,6 @@ export class ShipmentsController {
       const userId = req.user?.userId;
       let shipments = ShipmentService.getShipments(userId);
 
-      // Optional filters from query
       const { status, paymentStatus, limit, offset } = parsed.data;
       if (status) shipments = shipments.filter((s) => s.status === status);
       if (paymentStatus) shipments = shipments.filter((s) => s.paymentStatus === paymentStatus);

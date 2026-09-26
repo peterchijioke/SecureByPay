@@ -31,7 +31,6 @@ class _GrowthChartState extends State<GrowthChart> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Header with period buttons
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -61,7 +60,6 @@ class _GrowthChartState extends State<GrowthChart> {
           ),
           const SizedBox(height: 28),
 
-          // Custom spline chart with axis
           SizedBox(
             height: 220,
             child: widget.points.isEmpty
@@ -141,7 +139,6 @@ class _SplineChartPainter extends CustomPainter {
       fontWeight: FontWeight.w400,
     );
 
-    // Draw horizontal grid lines and Y-axis labels: 0, 200, 400, 600, 800, 1000
     final List<int> yLevels = [0, 200, 400, 600, 800, 1000];
     for (int level in yLevels) {
       final double y = chartHeight - (level / 1000.0) * chartHeight;
@@ -163,7 +160,6 @@ class _SplineChartPainter extends CustomPainter {
 
     if (points.length < 2) return;
 
-    // Calculate (x, y) coordinates
     final List<Offset> offsets = [];
     final double stepX = chartWidth / (points.length - 1);
 
@@ -173,7 +169,6 @@ class _SplineChartPainter extends CustomPainter {
       final double y = chartHeight - normalizedValue * chartHeight;
       offsets.add(Offset(x, y));
 
-      // Draw X axis label
       final textSpan = TextSpan(text: points[i].label, style: textStyle);
       final textPainter = TextPainter(
         text: textSpan,
@@ -185,7 +180,6 @@ class _SplineChartPainter extends CustomPainter {
       );
     }
 
-    // Build smooth cubic bezier path
     final path = Path();
     path.moveTo(offsets[0].dx, offsets[0].dy);
 
@@ -204,7 +198,6 @@ class _SplineChartPainter extends CustomPainter {
       path.cubicTo(cp1x, cp1y, cp2x, cp2y, p2.dx, p2.dy);
     }
 
-    // Fill area below the curve
     final fillPath = Path.from(path)
       ..lineTo(offsets.last.dx, chartHeight)
       ..lineTo(offsets.first.dx, chartHeight)
@@ -223,7 +216,6 @@ class _SplineChartPainter extends CustomPainter {
 
     canvas.drawPath(fillPath, fillPaint);
 
-    // Stroke path
     final strokePaint = Paint()
       ..color = primaryColor
       ..strokeWidth = 2.4

@@ -43,7 +43,6 @@ class _ShipmentItemCardState extends State<ShipmentItemCard> {
       ),
       child: Column(
         children: [
-          // Header Row
           InkWell(
             onTap: () {
               setState(() {
@@ -55,7 +54,6 @@ class _ShipmentItemCardState extends State<ShipmentItemCard> {
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 18),
               child: Row(
                 children: [
-                  // Tracking ID
                   Expanded(
                     flex: 3,
                     child: Column(
@@ -80,7 +78,6 @@ class _ShipmentItemCardState extends State<ShipmentItemCard> {
                       ],
                     ),
                   ),
-                  // Sender
                   Expanded(
                     flex: 3,
                     child: Column(
@@ -105,7 +102,6 @@ class _ShipmentItemCardState extends State<ShipmentItemCard> {
                       ],
                     ),
                   ),
-                  // Receiver
                   Expanded(
                     flex: 3,
                     child: Column(
@@ -130,7 +126,6 @@ class _ShipmentItemCardState extends State<ShipmentItemCard> {
                       ],
                     ),
                   ),
-                  // Toggle Chevron
                   Icon(
                     _isExpanded
                         ? Icons.keyboard_arrow_up_rounded
@@ -143,18 +138,15 @@ class _ShipmentItemCardState extends State<ShipmentItemCard> {
             ),
           ),
 
-          // Expanded Content
           if (_isExpanded) ...[
             const Divider(height: 1, color: AppColors.borderLight),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
               child: Column(
                 children: [
-                  // Locations, Amount, Status
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Pick Up
                       Expanded(
                         flex: 3,
                         child: Column(
@@ -184,7 +176,6 @@ class _ShipmentItemCardState extends State<ShipmentItemCard> {
                           ],
                         ),
                       ),
-                      // Delivery To
                       Expanded(
                         flex: 3,
                         child: Column(
@@ -214,7 +205,6 @@ class _ShipmentItemCardState extends State<ShipmentItemCard> {
                           ],
                         ),
                       ),
-                      // Amount
                       Expanded(
                         flex: 2,
                         child: Column(
@@ -239,7 +229,6 @@ class _ShipmentItemCardState extends State<ShipmentItemCard> {
                           ],
                         ),
                       ),
-                      // Status Badge
                       Expanded(
                         flex: 2,
                         child: Column(
@@ -282,11 +271,9 @@ class _ShipmentItemCardState extends State<ShipmentItemCard> {
                   ),
                   const SizedBox(height: 20),
 
-                  // Bottom action row: Processing time & Action buttons
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      // Processing time
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -319,7 +306,6 @@ class _ShipmentItemCardState extends State<ShipmentItemCard> {
                         ],
                       ),
 
-                      // Action buttons
                       Row(
                         children: [
                           OutlinedButton(

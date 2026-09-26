@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-/// Matches CSS: .balance-card
-/// grid column 2.2fr – rendered as Expanded(flex:22)
 class BalanceCard extends StatelessWidget {
   final double balance;
   final VoidCallback onFundWallet;
@@ -26,7 +24,6 @@ class BalanceCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(22),
       decoration: BoxDecoration(
-        // .balance-card gradient: #5A65AB → #6570BD
         gradient: const LinearGradient(
           colors: [Color(0xFF5A65AB), Color(0xFF6570BD)],
           begin: Alignment.topLeft,
@@ -44,7 +41,6 @@ class BalanceCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // .balance-label
           const Text(
             'Your Balance',
             style: TextStyle(
@@ -53,7 +49,6 @@ class BalanceCard extends StatelessWidget {
               color: Color(0xB3FFFFFF), // rgba(255,255,255,0.72)
             ),
           ),
-          // .balance-value
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 8),
             child: Text(
@@ -66,7 +61,6 @@ class BalanceCard extends StatelessWidget {
               ),
             ),
           ),
-          // .fund-wallet-btn
           GestureDetector(
             onTap: onFundWallet,
             child: Container(
@@ -91,8 +85,6 @@ class BalanceCard extends StatelessWidget {
   }
 }
 
-/// Matches CSS: .stat-card
-/// stat icon is a CIRCLE (border-radius: 50%) — 40×40
 class StatMetricCard extends StatelessWidget {
   final String title;
   final int count;
@@ -134,10 +126,8 @@ class StatMetricCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // .stat-card-header
           Row(
             children: [
-              // .stat-icon – CIRCLE (border-radius: 50%)
               Container(
                 width: 40,
                 height: 40,
@@ -167,7 +157,6 @@ class StatMetricCard extends StatelessWidget {
           ),
           const SizedBox(height: 14),
 
-          // .stat-value-row
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -180,7 +169,6 @@ class StatMetricCard extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 6),
-              // .stat-growth-tag
               Row(
                 children: [
                   const Icon(Icons.arrow_upward_rounded,
@@ -199,7 +187,6 @@ class StatMetricCard extends StatelessWidget {
           ),
           const SizedBox(height: 6),
 
-          // .stat-footer
           Text(
             'Vs last month: $vsLastMonth',
             style: const TextStyle(

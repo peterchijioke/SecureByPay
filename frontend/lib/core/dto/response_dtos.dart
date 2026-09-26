@@ -1,9 +1,3 @@
-/// DTOs used when parsing data FROM the backend API.
-///
-/// These mirror backend/src/dto/index.ts
-
-// ─── Auth Response DTOs ───────────────────────────────────────────────────────
-
 class UserResponseDto {
   final String id;
   final String firstName;
@@ -53,8 +47,6 @@ class AuthResponseDto {
         user: UserResponseDto.fromJson(json['user'] as Map<String, dynamic>),
       );
 }
-
-// ─── Dashboard Response DTOs ──────────────────────────────────────────────────
 
 class MetricBlockDto {
   final int count;
@@ -132,8 +124,6 @@ class FundWalletResponseDto {
   factory FundWalletResponseDto.fromJson(Map<String, dynamic> json) =>
       FundWalletResponseDto(newBalance: (json['newBalance'] as num?)?.toDouble() ?? 0.0);
 }
-
-// ─── Shipment Response DTOs ───────────────────────────────────────────────────
 
 class ShipmentResponseDto {
   final String id;

@@ -376,7 +376,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
       body: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Sidebar (desktop)
           if (isDesktop)
             SizedBox(
               height: MediaQuery.of(context).size.height,
@@ -386,12 +385,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
               ),
             ),
 
-          // Main Content
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                // Mobile top bar
                 if (!isDesktop)
                   Container(
                     height: 56,
@@ -409,7 +406,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     ),
                   ),
 
-                // Page Header (full width, minHeight: 80, border-bottom)
                 if (isDesktop)
                   Container(
                     width: double.infinity,
@@ -450,7 +446,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     ),
                   ),
 
-                // Dashboard Body
                 Expanded(
                   child: SingleChildScrollView(
                     padding: EdgeInsets.all(isDesktop ? 24 : 16),
@@ -490,10 +485,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
           const SizedBox(height: 16),
         ],
 
-        // Promo banner
         const PromoBanner(),
 
-        // Overview section header
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -511,20 +504,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
         ),
         const SizedBox(height: 16),
 
-        // Overview grid: 2.2fr 1fr 1fr 1fr
         _isLoading
             ? SkeletonOverviewGrid(isDesktop: isDesktop)
             : _buildOverviewGrid(),
         const SizedBox(height: 32),
 
-        // Recent shipment
         const _SectionHeader(
           title: 'Recent shipment',
           trailing: 'See All',
         ),
         const SizedBox(height: 16),
 
-        // Growth chart
         _isLoading
             ? const SkeletonGrowthChart()
             : GrowthChart(
@@ -534,7 +524,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
               ),
         const SizedBox(height: 16),
 
-        // Shipment cards
         if (_isLoading)
           const SkeletonShipmentList(count: 4)
         else

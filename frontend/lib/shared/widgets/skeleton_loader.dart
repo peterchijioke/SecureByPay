@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 
-// ─── Core shimmer widget ──────────────────────────────────────────────────────
 
-/// A single shimmer block. Wrap any shape with it.
 class SkeletonBox extends StatefulWidget {
   final double width;
   final double height;
@@ -65,9 +63,7 @@ class _SkeletonBoxState extends State<SkeletonBox>
   }
 }
 
-// ─── Composites ───────────────────────────────────────────────────────────────
 
-/// Skeleton for the big balance card (left overview card)
 class SkeletonBalanceCard extends StatelessWidget {
   const SkeletonBalanceCard({Key? key}) : super(key: key);
 
@@ -94,7 +90,6 @@ class SkeletonBalanceCard extends StatelessWidget {
   }
 }
 
-/// Skeleton for a small stat metric card (Total Shipments / Exports / Imports)
 class SkeletonStatCard extends StatelessWidget {
   const SkeletonStatCard({Key? key}) : super(key: key);
 
@@ -127,7 +122,6 @@ class SkeletonStatCard extends StatelessWidget {
   }
 }
 
-/// Skeleton row for the overview grid (balance card + 3 stat cards)
 class SkeletonOverviewGrid extends StatelessWidget {
   final bool isDesktop;
   const SkeletonOverviewGrid({Key? key, required this.isDesktop})
@@ -163,7 +157,6 @@ class SkeletonOverviewGrid extends StatelessWidget {
   }
 }
 
-/// Skeleton for the growth chart area
 class SkeletonGrowthChart extends StatelessWidget {
   const SkeletonGrowthChart({Key? key}) : super(key: key);
 
@@ -197,7 +190,6 @@ class SkeletonGrowthChart extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 24),
-          // Fake bars
           Expanded(
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.end,
@@ -222,7 +214,6 @@ class SkeletonGrowthChart extends StatelessWidget {
   }
 }
 
-/// Skeleton for a single shipment list item
 class SkeletonShipmentItem extends StatelessWidget {
   const SkeletonShipmentItem({Key? key}) : super(key: key);
 
@@ -260,7 +251,6 @@ class SkeletonShipmentItem extends StatelessWidget {
   }
 }
 
-/// A column of N skeleton shipment rows
 class SkeletonShipmentList extends StatelessWidget {
   final int count;
   const SkeletonShipmentList({Key? key, this.count = 4}) : super(key: key);

@@ -23,7 +23,6 @@ const _items = [
 class DashboardSidebar extends StatelessWidget {
   final String activeRoute;
   final Function(String)? onSelectRoute;
-  // kept for compat
   final bool showHeader;
 
   const DashboardSidebar({
@@ -49,10 +48,8 @@ class DashboardSidebar extends StatelessWidget {
       ),
       child: Column(
         children: [
-          // ── Sidebar Header (empty spacing matching Figma design) ───────
           const SizedBox(height: 80),
 
-          // ── Nav (flex:1, scrollable) ──────────────────────────────────
           Expanded(
             child: ListView(
               padding: const EdgeInsets.fromLTRB(10, 16, 10, 8),
@@ -67,7 +64,6 @@ class DashboardSidebar extends StatelessWidget {
             ),
           ),
 
-          // ── Footer: user + logout ──────────────────────────────────────
           Container(
             padding: const EdgeInsets.fromLTRB(12, 14, 12, 16),
             decoration: const BoxDecoration(
@@ -80,7 +76,6 @@ class DashboardSidebar extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    // Avatar with gradient (matches .user-avatar CSS)
                     Container(
                       width: 36,
                       height: 36,
@@ -135,7 +130,6 @@ class DashboardSidebar extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 12),
-                // Logout button
                 InkWell(
                   onTap: () async {
                     await ApiService().logout();

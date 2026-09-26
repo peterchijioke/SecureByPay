@@ -32,7 +32,6 @@ class DashboardHeader extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 24),
       child: Row(
         children: [
-          // Left: Logo / Menu button
           if (showMenuButton)
             IconButton(
               icon: const Icon(Icons.menu_rounded, color: AppColors.textPrimary),
@@ -73,7 +72,6 @@ class DashboardHeader extends StatelessWidget {
 
           const Spacer(),
 
-          // Right: Search hint (desktop only)
           if (!showMenuButton) ...[
             Container(
               width: 220,
@@ -102,7 +100,6 @@ class DashboardHeader extends StatelessWidget {
             const SizedBox(width: 16),
           ],
 
-          // Notification bell
           Container(
             width: 36,
             height: 36,
@@ -137,7 +134,6 @@ class DashboardHeader extends StatelessWidget {
           ),
           const SizedBox(width: 12),
 
-          // User avatar + name
           Row(
             children: [
               CircleAvatar(

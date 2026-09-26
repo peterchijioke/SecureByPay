@@ -85,7 +85,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
         children: [
           Row(
             children: [
-          // Left: Form Area
           Expanded(
             flex: isDesktop ? 6 : 10,
             child: Center(
@@ -137,7 +136,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                         const SizedBox(height: 36),
 
-                        // Names row
                         LayoutBuilder(
                           builder: (context, constraints) {
                             if (constraints.maxWidth > 400) {
@@ -186,7 +184,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                         const SizedBox(height: 20),
 
-                        // Email
                         CustomTextField(
                           label: 'Email',
                           hintText: 'user@example.com',
@@ -196,7 +193,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                         const SizedBox(height: 20),
 
-                        // Phone Number
                         CustomTextField(
                           label: 'Phone Number',
                           hintText: '8012345678',
@@ -208,7 +204,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                         const SizedBox(height: 20),
 
-                        // Password
                         CustomTextField(
                           label: 'Password',
                           hintText: 'Enter Password',
@@ -218,7 +213,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                         const SizedBox(height: 28),
 
-                        // Button
                         CustomButton(
                           text: 'Create account',
                           onPressed: _handleRegister,
@@ -228,7 +222,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                         const SizedBox(height: 24),
 
-                        // Terms text
                         RichText(
                           text: TextSpan(
                             style: TextStyle(
@@ -264,7 +257,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
             ),
           ),
 
-          // Right: Banner Side (Desktop/Tablet)
           if (isDesktop)
             const Expanded(
               flex: 5,
@@ -276,7 +268,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
         ],
       ),
 
-          // Activity overlay — appears on top while creating account
           if (_isLoading)
             AnimatedOpacity(
               opacity: _isLoading ? 1.0 : 0.0,
