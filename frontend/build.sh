@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-API_BASE_URL="${API_BASE_URL:-https://securebypay-api.onrender.com/api/v1}"
+API_BASE_URL="${API_BASE_URL:-https://securebypay-backend-69wy.onrender.com/api/v1}"
 
 echo "Building Flutter web with API_BASE_URL=$API_BASE_URL"
 

@@ -18,8 +18,10 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use('/api/v1', routes);
 
+const serveFrontend = process.env.SERVE_FRONTEND === 'true';
 const frontendBuildPath = path.join(__dirname, '../../frontend/build/web');
-if (fs.existsSync(frontendBuildPath)) {
+
+if (serveFrontend && fs.existsSync(frontendBuildPath)) {
   app.use(express.static(frontendBuildPath));
   app.get('*', (req, res, next) => {
     if (req.path.startsWith('/api')) {
@@ -30,8 +32,26 @@ if (fs.existsSync(frontendBuildPath)) {
 } else {
   app.get('/', (req, res) => {
     res.json({
-      message: 'Welcome to SecureByPay Backend API',
+      service: 'SecureByPay Backend API',
+      status: 'healthy',
       version: '1.0.0',
+      timestamp: new Date().toISOString(),
+      docs: {
+        health: '/api/v1/health',
+        auth: {
+          register: 'POST /api/v1/auth/register',
+          login: 'POST /api/v1/auth/login',
+          me: 'GET /api/v1/auth/me',
+        },
+        shipments: {
+          list: 'GET /api/v1/shipments',
+          create: 'POST /api/v1/shipments',
+          stats: 'GET /api/v1/shipments/stats',
+        },
+        dashboard: {
+          overview: 'GET /api/v1/dashboard/overview',
+        },
+      },
     });
   });
 }

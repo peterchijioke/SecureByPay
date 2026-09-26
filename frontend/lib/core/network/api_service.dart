@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import '../../features/auth/models/user_model.dart';
 import '../../features/dashboard/models/dashboard_model.dart';
@@ -11,11 +12,33 @@ class ApiService {
   factory ApiService() => _instance;
   ApiService._internal();
 
-  static const String _defaultBaseUrl = String.fromEnvironment(
-    'API_BASE_URL',
-    defaultValue: 'http://localhost:5001/api/v1',
-  );
-  String baseUrl = _defaultBaseUrl;
+  static const String _envBaseUrl = String.fromEnvironment('API_BASE_URL');
+  String? _customBaseUrl;
+
+  String get baseUrl {
+    if (_customBaseUrl != null && _customBaseUrl!.isNotEmpty) {
+      return _customBaseUrl!;
+    }
+    if (_envBaseUrl.isNotEmpty) {
+      return _envBaseUrl;
+    }
+    if (kIsWeb) {
+      final origin = Uri.base.origin;
+      if (origin.contains('localhost') || origin.contains('127.0.0.1')) {
+        return 'http://localhost:5001/api/v1';
+      }
+      if (origin.isNotEmpty && !origin.startsWith('file://')) {
+        if (origin.contains('backend')) {
+          return '$origin/api/v1';
+        }
+      }
+    }
+    return 'https://securebypay-backend-69wy.onrender.com/api/v1';
+  }
+
+  set baseUrl(String url) {
+    _customBaseUrl = url;
+  }
   String? _token;
   UserModel? currentUser;
 
