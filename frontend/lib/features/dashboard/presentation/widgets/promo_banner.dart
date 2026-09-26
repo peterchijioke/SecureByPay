@@ -57,7 +57,7 @@ class PromoBanner extends StatelessWidget {
                           fontWeight: FontWeight.w800,
                           height: 1.22,
                           letterSpacing: 0.4,
-                          fontFamily: 'DMSans',
+                          fontFamily: 'DM Sans',
                         ),
                       ),
                     ),
