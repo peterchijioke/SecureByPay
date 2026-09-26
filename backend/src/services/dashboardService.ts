@@ -82,7 +82,6 @@ export class DashboardService {
       };
     }
 
-    // Default 'year' (matching the Figma chart curve: 1 to 12)
     return {
       period: 'year',
       points: [

@@ -1,16 +1,39 @@
 import { Response, NextFunction } from 'express';
-import { ShipmentService } from '../services/shipmentService';
 import { AuthenticatedRequest } from '../middleware/authMiddleware';
+import { ShipmentService } from '../services/shipmentService';
+import { shipmentsQuerySchema, shipmentIdSchema, formatZodErrors } from '../validators/shipmentValidator';
+import type {
+  ApiResponse,
+  ShipmentResponseDto,
+  ShipmentsListResponseDto,
+  PayShipmentResponseDto,
+} from '../dto';
 
 export class ShipmentsController {
   static getShipments(req: AuthenticatedRequest, res: Response, next: NextFunction): void {
     try {
+      // Validate & parse query params
+      const parsed = shipmentsQuerySchema.safeParse(req.query);
+      if (!parsed.success) {
+        const errors = formatZodErrors(parsed.error);
+        const body: ApiResponse = { success: false, message: errors[0], errors };
+        res.status(400).json(body);
+        return;
+      }
+
       const userId = req.user?.userId;
-      const shipments = ShipmentService.getShipments(userId);
-      res.status(200).json({
-        success: true,
-        data: shipments,
-      });
+      let shipments = ShipmentService.getShipments(userId);
+
+      // Optional filters from query
+      const { status, paymentStatus, limit, offset } = parsed.data;
+      if (status) shipments = shipments.filter((s) => s.status === status);
+      if (paymentStatus) shipments = shipments.filter((s) => s.paymentStatus === paymentStatus);
+      const start = offset ?? 0;
+      const end = limit !== undefined ? start + limit : undefined;
+      shipments = shipments.slice(start, end);
+
+      const body: ApiResponse<ShipmentResponseDto[]> = { success: true, data: shipments };
+      res.status(200).json(body);
     } catch (error: any) {
       next(error);
     }
@@ -18,16 +41,23 @@ export class ShipmentsController {
 
   static getShipmentById(req: AuthenticatedRequest, res: Response, next: NextFunction): void {
     try {
-      const id = req.params.id as string;
-      const shipment = ShipmentService.getShipmentById(id);
-      if (!shipment) {
-        res.status(404).json({ success: false, message: 'Shipment not found.' });
+      const parsed = shipmentIdSchema.safeParse(req.params);
+      if (!parsed.success) {
+        const errors = formatZodErrors(parsed.error);
+        const body: ApiResponse = { success: false, message: errors[0], errors };
+        res.status(400).json(body);
         return;
       }
-      res.status(200).json({
-        success: true,
-        data: shipment,
-      });
+
+      const shipment = ShipmentService.getShipmentById(parsed.data.id);
+      if (!shipment) {
+        const body: ApiResponse = { success: false, message: 'Shipment not found.' };
+        res.status(404).json(body);
+        return;
+      }
+
+      const body: ApiResponse<ShipmentResponseDto> = { success: true, data: shipment };
+      res.status(200).json(body);
     } catch (error: any) {
       next(error);
     }
@@ -35,18 +65,27 @@ export class ShipmentsController {
 
   static payShipment(req: AuthenticatedRequest, res: Response, next: NextFunction): void {
     try {
-      const id = req.params.id as string;
-      const updated = ShipmentService.payShipment(id);
-      res.status(200).json({
+      const parsed = shipmentIdSchema.safeParse(req.params);
+      if (!parsed.success) {
+        const errors = formatZodErrors(parsed.error);
+        const body: ApiResponse = { success: false, message: errors[0], errors };
+        res.status(400).json(body);
+        return;
+      }
+
+      const updated = ShipmentService.payShipment(parsed.data.id);
+      const body: ApiResponse<PayShipmentResponseDto> = {
         success: true,
         message: 'Shipment payment successful.',
-        data: updated,
-      });
+        data: { shipment: updated },
+      };
+      res.status(200).json(body);
     } catch (error: any) {
-      res.status(400).json({
+      const body: ApiResponse = {
         success: false,
         message: error.message || 'Payment processing failed.',
-      });
+      };
+      res.status(400).json(body);
     }
   }
 }

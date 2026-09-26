@@ -3,6 +3,8 @@ import 'package:http/http.dart' as http;
 import '../../features/auth/models/user_model.dart';
 import '../../features/dashboard/models/dashboard_model.dart';
 import '../../features/shipments/models/shipment_model.dart';
+import '../dto/request_dtos.dart';
+import '../dto/response_dtos.dart';
 
 class ApiService {
   static final ApiService _instance = ApiService._internal();
@@ -25,87 +27,69 @@ class ApiService {
         if (_token != null) 'Authorization': 'Bearer $_token',
       };
 
-  // Auth: Register
-  Future<UserModel> register({
-    required String firstName,
-    required String lastName,
-    required String email,
-    required String phone,
-    required String password,
-  }) async {
+  // Auth: Register — accepts a typed DTO
+  Future<UserModel> register(RegisterRequestDto dto) async {
     try {
       final response = await http.post(
         Uri.parse('$baseUrl/auth/register'),
         headers: _headers,
-        body: jsonEncode({
-          'firstName': firstName,
-          'lastName': lastName,
-          'email': email,
-          'phone': phone,
-          'password': password,
-        }),
+        body: jsonEncode(dto.toJson()),
       );
 
-      final data = jsonDecode(response.body);
+      final data = jsonDecode(response.body) as Map<String, dynamic>;
       if (response.statusCode >= 200 && response.statusCode < 300) {
-        _token = data['data']['token'];
-        currentUser = UserModel.fromJson(data['data']['user']);
+        final auth = AuthResponseDto.fromJson(data['data'] as Map<String, dynamic>);
+        _token = auth.token;
+        currentUser = UserModel.fromJson(data['data']['user'] as Map<String, dynamic>);
         return currentUser!;
       } else {
         throw Exception(data['message'] ?? 'Failed to register');
       }
     } catch (e) {
-      if (e.toString().contains('Failed to register') || e.toString().contains('already exists')) {
-        rethrow;
-      }
+      if (e.toString().contains('Failed to register') ||
+          e.toString().contains('already exists')) rethrow;
       // Demo fallback if network is unreachable
       _token = 'demo_token_${DateTime.now().millisecondsSinceEpoch}';
       currentUser = UserModel(
         id: 'usr-demo',
-        firstName: firstName,
-        lastName: lastName,
-        email: email,
-        phone: phone,
+        firstName: dto.firstName,
+        lastName: dto.lastName,
+        email: dto.email,
+        phone: dto.phone,
         walletBalance: 3000000.28,
       );
       return currentUser!;
     }
   }
 
-  // Auth: Login
-  Future<UserModel> login({
-    required String email,
-    required String password,
-  }) async {
+  // Auth: Login — accepts a typed DTO
+  Future<UserModel> login(LoginRequestDto dto) async {
     try {
       final response = await http.post(
         Uri.parse('$baseUrl/auth/login'),
         headers: _headers,
-        body: jsonEncode({
-          'email': email,
-          'password': password,
-        }),
+        body: jsonEncode(dto.toJson()),
       );
 
-      final data = jsonDecode(response.body);
+      final data = jsonDecode(response.body) as Map<String, dynamic>;
       if (response.statusCode >= 200 && response.statusCode < 300) {
-        _token = data['data']['token'];
-        currentUser = UserModel.fromJson(data['data']['user']);
+        final auth = AuthResponseDto.fromJson(data['data'] as Map<String, dynamic>);
+        _token = auth.token;
+        currentUser = UserModel.fromJson(data['data']['user'] as Map<String, dynamic>);
         return currentUser!;
       } else {
         throw Exception(data['message'] ?? 'Failed to sign in');
       }
     } catch (e) {
-      if (e.toString().contains('Invalid') || e.toString().contains('Failed to sign in')) {
-        rethrow;
-      }
+      if (e.toString().contains('Invalid') ||
+          e.toString().contains('Failed to sign in')) rethrow;
       // Demo fallback
       _token = 'demo_token_123';
       currentUser = UserModel(
         id: 'usr-1',
         firstName: 'Bunmi',
         lastName: 'Tanny',
-        email: email,
+        email: dto.email,
         phone: '+2348012345678',
         walletBalance: 3000000.28,
       );
@@ -113,9 +97,39 @@ class ApiService {
     }
   }
 
-  void logout() {
-    _token = null;
-    currentUser = null;
+  /// Logs out the current user. Calls POST /auth/logout to revoke the token
+  /// server-side, then clears local state.
+  Future<void> logout() async {
+    try {
+      if (_token != null) {
+        await http.post(
+          Uri.parse('$baseUrl/auth/logout'),
+          headers: _headers,
+        );
+      }
+    } catch (_) {
+      // Swallow network errors — always clear local state
+    } finally {
+      _token = null;
+      currentUser = null;
+    }
+  }
+
+  /// Refreshes the JWT token. Calls POST /auth/refresh and updates the stored token.
+  Future<UserModel?> refreshToken() async {
+    try {
+      final response = await http.post(
+        Uri.parse('$baseUrl/auth/refresh'),
+        headers: _headers,
+      );
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        _token = data['data']['token'];
+        currentUser = UserModel.fromJson(data['data']['user']);
+        return currentUser;
+      }
+    } catch (_) {}
+    return currentUser;
   }
 
   // Dashboard: Overview

@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_strings.dart';
+import '../../../core/dto/request_dtos.dart';
 import '../../../core/network/api_service.dart';
 import '../../../core/utils/responsive.dart';
+import '../../../core/utils/validators.dart';
 import '../../../shared/widgets/custom_button.dart';
 import '../../../shared/widgets/custom_text_field.dart';
 import 'widgets/auth_banner.dart';
@@ -35,8 +37,10 @@ class _LoginScreenState extends State<LoginScreen> {
 
     try {
       await ApiService().login(
-        email: _emailController.text.trim(),
-        password: _passwordController.text,
+        LoginRequestDto(
+          email: _emailController.text.trim(),
+          password: _passwordController.text,
+        ),
       );
 
       if (!mounted) return;
@@ -66,7 +70,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Row(
+      body: Stack(
+        children: [
+          Row(
         children: [
           // Left: Form Area
           Expanded(
@@ -126,13 +132,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           hintText: 'user@example.com',
                           controller: _emailController,
                           keyboardType: TextInputType.emailAddress,
-                          validator: (val) {
-                            if (val == null || val.isEmpty) return 'Email is required';
-                            if (!val.contains('@') || !val.contains('.')) {
-                              return 'Enter a valid email address';
-                            }
-                            return null;
-                          },
+                            validator: Validators.email,
                         ),
                         const SizedBox(height: 20),
 
@@ -142,10 +142,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           hintText: 'Enter Password',
                           controller: _passwordController,
                           isPassword: true,
-                          validator: (val) {
-                            if (val == null || val.isEmpty) return 'Password is required';
-                            return null;
-                          },
+                            validator: Validators.loginPassword,
                         ),
                         const SizedBox(height: 12),
 
@@ -230,6 +227,67 @@ class _LoginScreenState extends State<LoginScreen> {
               child: AuthBanner(
                 title: AppStrings.bannerTrackingTitle,
                 subtitle: AppStrings.bannerTrackingDesc,
+              ),
+            ),
+        ],
+      ),
+
+          // Activity overlay — appears on top while logging in
+          if (_isLoading)
+            AnimatedOpacity(
+              opacity: _isLoading ? 1.0 : 0.0,
+              duration: const Duration(milliseconds: 200),
+              child: Container(
+                color: Colors.black.withValues(alpha: 0.45),
+                child: Center(
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 36, vertical: 28),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(16),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withValues(alpha: 0.12),
+                          blurRadius: 24,
+                          offset: const Offset(0, 8),
+                        ),
+                      ],
+                    ),
+                    child: const Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        SizedBox(
+                          width: 42,
+                          height: 42,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 3,
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                              Color(0xFF1C3F6E),
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 16),
+                        Text(
+                          'Signing in…',
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                            color: Color(0xFF1E293B),
+                          ),
+                        ),
+                        SizedBox(height: 4),
+                        Text(
+                          'Please wait',
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Color(0xFF64748B),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
               ),
             ),
         ],

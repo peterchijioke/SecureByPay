@@ -1,29 +1,26 @@
 import { Request, Response, NextFunction } from 'express';
+import { z } from 'zod';
 import { AuthService } from '../services/authService';
 import { AuthenticatedRequest } from '../middleware/authMiddleware';
+import { registerSchema, loginSchema, formatZodErrors } from '../validators/authValidator';
+import type { ApiResponse, AuthResponseDto, UserResponseDto } from '../dto';
 
 export class AuthController {
   static async register(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      const { firstName, lastName, email, phone, password } = req.body;
-
-      if (!firstName || !lastName || !email || !phone || !password) {
+      const parsed = registerSchema.safeParse(req.body);
+      if (!parsed.success) {
+        const errors = formatZodErrors(parsed.error);
         res.status(400).json({
           success: false,
-          message: 'All fields (First name, Last name, Email, Phone number, Password) are required.',
+          message: errors[0],
+          errors,
         });
         return;
       }
 
-      if (password.length < 6) {
-        res.status(400).json({
-          success: false,
-          message: 'Password must be at least 6 characters long.',
-        });
-        return;
-      }
-
-      const result = await AuthService.register({ firstName, lastName, email, phone, password });
+      const { firstName, lastName, email, phone, password, role } = parsed.data;
+      const result = await AuthService.register({ firstName, lastName, email, phone, password, role });
       res.status(201).json({
         success: true,
         message: 'Account created successfully.',
@@ -39,16 +36,18 @@ export class AuthController {
 
   static async login(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      const { email, password } = req.body;
-
-      if (!email || !password) {
+      const parsed = loginSchema.safeParse(req.body);
+      if (!parsed.success) {
+        const errors = formatZodErrors(parsed.error);
         res.status(400).json({
           success: false,
-          message: 'Email and password are required.',
+          message: errors[0],
+          errors,
         });
         return;
       }
 
+      const { email, password } = parsed.data;
       const result = await AuthService.login({ email, password });
       res.status(200).json({
         success: true,
@@ -79,6 +78,42 @@ export class AuthController {
       res.status(200).json({
         success: true,
         data: user,
+      });
+    } catch (error: any) {
+      next(error);
+    }
+  }
+
+  static async refresh(req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> {
+    try {
+      if (!req.user?.userId) {
+        res.status(401).json({ success: false, message: 'Unauthorized' });
+        return;
+      }
+
+      const result = AuthService.refreshToken(req.user.userId);
+      res.status(200).json({
+        success: true,
+        message: 'Token refreshed successfully.',
+        data: result,
+      });
+    } catch (error: any) {
+      res.status(401).json({
+        success: false,
+        message: error.message || 'Token refresh failed.',
+      });
+    }
+  }
+
+  static async logout(req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const token = req.token || req.headers.authorization?.split(' ')[1];
+      if (token) {
+        AuthService.logout(token);
+      }
+      res.status(200).json({
+        success: true,
+        message: 'Logged out successfully.',
       });
     } catch (error: any) {
       next(error);

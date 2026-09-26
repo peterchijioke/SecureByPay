@@ -11,6 +11,7 @@ import 'widgets/overview_card.dart';
 import 'widgets/promo_banner.dart';
 import 'widgets/sidebar.dart';
 import '../../../shared/widgets/app_icons.dart';
+import '../../../shared/widgets/skeleton_loader.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({Key? key}) : super(key: key);
@@ -511,7 +512,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
         const SizedBox(height: 16),
 
         // Overview grid: 2.2fr 1fr 1fr 1fr
-        _buildOverviewGrid(),
+        _isLoading
+            ? SkeletonOverviewGrid(isDesktop: isDesktop)
+            : _buildOverviewGrid(),
         const SizedBox(height: 32),
 
         // Recent shipment
@@ -522,21 +525,18 @@ class _DashboardScreenState extends State<DashboardScreen> {
         const SizedBox(height: 16),
 
         // Growth chart
-        GrowthChart(
-          points: _growthPoints,
-          selectedPeriod: _selectedGrowthPeriod,
-          onPeriodChanged: _handlePeriodChange,
-        ),
+        _isLoading
+            ? const SkeletonGrowthChart()
+            : GrowthChart(
+                points: _growthPoints,
+                selectedPeriod: _selectedGrowthPeriod,
+                onPeriodChanged: _handlePeriodChange,
+              ),
         const SizedBox(height: 16),
 
         // Shipment cards
         if (_isLoading)
-          const Center(
-            child: Padding(
-              padding: EdgeInsets.all(40),
-              child: CircularProgressIndicator(),
-            ),
-          )
+          const SkeletonShipmentList(count: 4)
         else
           ..._shipments.map(
             (s) => ShipmentItemCard(
@@ -560,12 +560,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         ),
         const SizedBox(height: 16),
         if (_isLoading)
-          const Center(
-            child: Padding(
-              padding: EdgeInsets.all(40),
-              child: CircularProgressIndicator(),
-            ),
-          )
+          const SkeletonShipmentList(count: 4)
         else
           ..._shipments.map(
             (s) => ShipmentItemCard(

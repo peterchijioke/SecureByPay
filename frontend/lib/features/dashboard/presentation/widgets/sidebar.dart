@@ -137,9 +137,9 @@ class DashboardSidebar extends StatelessWidget {
                 const SizedBox(height: 12),
                 // Logout button
                 InkWell(
-                  onTap: () {
-                    ApiService().logout();
-                    context.go('/login');
+                  onTap: () async {
+                    await ApiService().logout();
+                    if (context.mounted) context.go('/login');
                   },
                   child: Padding(
                     padding: const EdgeInsets.symmetric(vertical: 6),
