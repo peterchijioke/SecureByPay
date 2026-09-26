@@ -92899,7 +92899,7 @@ CO(a){return this.ay8(a)},
 ay8(a){var s=0,r=A.O(t.Ct),q,p=2,o=[],n=this,m,l,k,j,i,h,g,f
 var $async$CO=A.P(function(b,c){if(b===1){o.push(c)
 s=p}for(;;)switch(s){case 0:p=4
-i=A.cJ("http://localhost:5001/api/v1/auth/register",0,null)
+i=A.cJ("https://securebypay-api.onrender.com/api/v1/auth/register",0,null)
 h=n.gmV()
 s=7
 return A.J(A.a2y(i,B.aI.Ba(a.fV(),null),h),$async$CO)
@@ -92939,7 +92939,7 @@ C2(a){return this.avM(a)},
 avM(a){var s=0,r=A.O(t.Ct),q,p=2,o=[],n=this,m,l,k,j,i,h,g,f
 var $async$C2=A.P(function(b,c){if(b===1){o.push(c)
 s=p}for(;;)switch(s){case 0:p=4
-i=A.cJ("http://localhost:5001/api/v1/auth/login",0,null)
+i=A.cJ("https://securebypay-api.onrender.com/api/v1/auth/login",0,null)
 h=n.gmV()
 s=7
 return A.J(A.a2y(i,B.aI.Ba(a.fV(),null),h),$async$C2)
@@ -92981,7 +92981,7 @@ s=q}for(;;)switch(s){case 0:q=3
 s=n.b!=null?6:7
 break
 case 6:s=8
-return A.J(A.a2y(A.cJ("http://localhost:5001/api/v1/auth/logout",0,null),null,n.gmV()),$async$C3)
+return A.J(A.a2y(A.cJ("https://securebypay-api.onrender.com/api/v1/auth/logout",0,null),null,n.gmV()),$async$C3)
 case 8:case 7:o.push(5)
 s=4
 break
@@ -93002,7 +93002,7 @@ xq(){var s=0,r=A.O(t.PK),q,p=2,o=[],n=this,m,l,k,j,i,h,g,f,e,d,c,b,a,a0,a1
 var $async$xq=A.P(function(a2,a3){if(a2===1){o.push(a3)
 s=p}for(;;)switch(s){case 0:p=4
 s=7
-return A.J(A.aFo(A.cJ("http://localhost:5001/api/v1/dashboard/overview",0,null),n.gmV()),$async$xq)
+return A.J(A.aFo(A.cJ("https://securebypay-api.onrender.com/api/v1/dashboard/overview",0,null),n.gmV()),$async$xq)
 case 7:m=a3
 if(m.b===200){k=m
 l=B.aI.nk(A.yK(A.yD(k.e)).dG(k.w),null)
@@ -93066,7 +93066,7 @@ a2s(a){var s=0,r=A.O(t.SR),q,p=2,o=[],n=this,m,l,k,j,i,h
 var $async$tI=A.P(function(b,c){if(b===1){o.push(c)
 s=p}for(;;)switch(s){case 0:p=4
 s=7
-return A.J(A.aFo(A.cJ("http://localhost:5001/api/v1/dashboard/growth?period="+a,0,null),n.gmV()),$async$tI)
+return A.J(A.aFo(A.cJ("https://securebypay-api.onrender.com/api/v1/dashboard/growth?period="+a,0,null),n.gmV()),$async$tI)
 case 7:m=c
 if(m.b===200){j=m
 l=B.aI.nk(A.yK(A.yD(j.e)).dG(j.w),null)
@@ -93094,7 +93094,7 @@ xu(){var s=0,r=A.O(t.nV),q,p=2,o=[],n=this,m,l,k,j,i,h
 var $async$xu=A.P(function(a,b){if(a===1){o.push(b)
 s=p}for(;;)switch(s){case 0:p=4
 s=7
-return A.J(A.aFo(A.cJ("http://localhost:5001/api/v1/shipments",0,null),n.gmV()),$async$xu)
+return A.J(A.aFo(A.cJ("https://securebypay-api.onrender.com/api/v1/shipments",0,null),n.gmV()),$async$xu)
 case 7:m=b
 if(m.b===200){j=m
 l=B.aI.nk(A.yK(A.yD(j.e)).dG(j.w),null)
@@ -93123,7 +93123,7 @@ axD(a){var s=0,r=A.O(t.F_),q,p=2,o=[],n=this,m,l,k,j,i
 var $async$Cv=A.P(function(b,c){if(b===1){o.push(c)
 s=p}for(;;)switch(s){case 0:p=4
 s=7
-return A.J(A.a2y(A.cJ("http://localhost:5001/api/v1/shipments/"+a+"/pay",0,null),null,n.gmV()),$async$Cv)
+return A.J(A.a2y(A.cJ("https://securebypay-api.onrender.com/api/v1/shipments/"+a+"/pay",0,null),null,n.gmV()),$async$Cv)
 case 7:m=c
 if(m.b===200){k=m
 l=B.aI.nk(A.yK(A.yD(k.e)).dG(k.w),null)
@@ -93149,7 +93149,7 @@ Bu(a){return this.atm(a)},
 atm(a){var s=0,r=A.O(t.i),q,p=2,o=[],n=this,m,l,k,j,i,h,g,f,e
 var $async$Bu=A.P(function(b,c){if(b===1){o.push(c)
 s=p}for(;;)switch(s){case 0:p=4
-j=A.cJ("http://localhost:5001/api/v1/dashboard/wallet/fund",0,null)
+j=A.cJ("https://securebypay-api.onrender.com/api/v1/dashboard/wallet/fund",0,null)
 i=n.gmV()
 s=7
 return A.J(A.a2y(j,B.aI.Ba(A.av(["amount",a],t.N,t.i),null),i),$async$Bu)

@@ -1,209 +1,128 @@
-# SecureByPay (Myafrimall) Technical Assessment
+# SecureByPay — Render Deployment Guide
 
-Full-stack web application built for the SecureByPay Technical Assessment, demonstrating frontend design fidelity, responsive layouts, and functional backend API integration.
+## Architecture on Render
 
-![Platform](https://img.shields.io/badge/Platform-Flutter%20Web%20%7C%20Node.js-blue)
-![Brand Color](https://img.shields.io/badge/Primary%20Color-%235A65AB-5A65AB)
-![Tests](https://img.shields.io/badge/Tests-Passing-brightgreen)
-![Status](https://img.shields.io/badge/Status-Production%20Ready-success)
-
----
-
-## 🚀 Overview
-
-This application faithfully replicates the provided Figma designs for the **Myafrimall** platform:
-1. **Design & Responsiveness**:
-   - Primary Brand Color: `#5A65AB`
-   - Custom Dotted World Map canvas graphic on authentication pages.
-   - Fully responsive across Desktop (>1024px), Tablet (768px–1024px), and Mobile (<768px).
-   - Collapsible desktop sidebar and mobile navigation drawer.
-   - Interactive Company Growth spline curve with Year / Month / Week period filters.
-   - Expandable shipment cards with detailed status badges (`In-Transit`, `Delayed`, `Paid`), pick-up/delivery locations, and payment actions.
-2. **Backend API Integration**:
-   - **Authentication**: Registration and Login flows with password hashing (`bcryptjs`), JWT token generation, and protected routes.
-   - **Dashboard Analytics**: Live overview metrics (Wallet balance, total shipments, total exports, total imports, +90% growth trends).
-   - **Interactive Operations**: Live shipment payment processing (`POST /api/v1/shipments/:id/pay`) and wallet funding (`POST /api/v1/dashboard/wallet/fund`).
+| Service | Type | Source |
+|---|---|---|
+| `securebypay-api` | Web Service (Node.js) | `backend/` |
+| `securebypay-frontend` | Static Site | `frontend/build/web/` |
 
 ---
 
-## 📁 Repository Structure
+## Step 1 — Push to GitHub
 
-The project follows standard production-grade clean architecture:
-
-```
-SecureByPay/
-├── backend/                         # Node.js / Express Backend (TypeScript)
-│   ├── src/
-│   │   ├── config/                  # App configuration & environment variables
-│   │   ├── controllers/             # Express request controllers (Auth, Dashboard, Shipments)
-│   │   ├── middleware/              # JWT authentication & error handling middleware
-│   │   ├── models/                  # TypeScript data interfaces & schemas
-│   │   ├── routes/                  # Express API route modules
-│   │   ├── services/                # Business logic & file-persisted storage layer
-│   │   ├── utils/                   # JWT & helper utilities
-│   │   ├── app.ts                   # Express application setup & static serving
-│   │   └── server.ts                # Server entry point
-│   ├── test/                        # Automated API test suite (Node test runner)
-│   ├── package.json
-│   └── tsconfig.json
-│
-├── frontend/                        # Flutter Web Frontend
-│   ├── lib/
-│   │   ├── core/
-│   │   │   ├── constants/           # App colors (#5A65AB, #1E243A) & strings
-│   │   │   ├── network/             # ApiService (HTTP client, JWT interceptor, fallback)
-│   │   │   ├── theme/               # Material ThemeData with Google Fonts Inter
-│   │   │   └── utils/               # Responsive layout builder (Desktop, Tablet, Mobile)
-│   │   ├── features/
-│   │   │   ├── auth/                # Sign-Up & Sign-In features
-│   │   │   │   ├── models/          # UserModel
-│   │   │   │   └── presentation/    # SignUpScreen, LoginScreen, AuthBanner
-│   │   │   ├── dashboard/           # Main Dashboard Overview
-│   │   │   │   ├── models/          # OverviewMetrics, GrowthPoint models
-│   │   │   │   └── presentation/    # DashboardScreen, OverviewCards, GrowthChart, PromoBanner, Sidebar
-│   │   │   └── shipments/           # Shipment feature
-│   │   │       ├── models/          # ShipmentModel
-│   │   │       └── presentation/    # ShipmentItemCard (expandable accordion & pay action)
-│   │   ├── shared/
-│   │   │   └── widgets/             # CustomTextField, CustomButton, DottedWorldMap
-│   │   └── main.dart                # Flutter application entry point
-│   ├── build/web/                   # Compiled web application distribution
-│   ├── web/                         # Web manifest, index.html, preloader
-│   └── pubspec.yaml                 # Flutter dependencies
-│
-├── package.json                     # Monorepo root scripts
-├── .gitignore
-└── README.md
-```
-
----
-
-## 🛠️ Technology Stack
-
-- **Frontend**: Flutter Web (Dart 3.x), HTML5 Canvas, Google Fonts (Inter).
-- **Backend**: Node.js (v22), Express.js, TypeScript, bcryptjs, jsonwebtoken, cors, dotenv.
-- **Testing**: Node.js native test runner (`node:test`, `assert`).
-
----
-
-## ⚡ Getting Started Locally
-
-### Prerequisites
-- Node.js (v18+)
-- npm (v9+)
-- Flutter SDK (optional if serving the bundled web distribution)
-
-### 1. Quick Start (Run Both Frontend & Backend with 1 Command)
+Make sure the repo is on GitHub. The `frontend/build/web/` folder must be committed (it is not ignored — see `.gitignore`).
 
 ```bash
-# Clone the repository
-git clone <your-repo-url>
-cd SecureByPay
-
-# Install backend dependencies
-cd backend && npm install && npm run build && cd ..
-
-# Start the full-stack server
-npm start
+git add .
+git commit -m "chore: prepare for Render deployment"
+git push origin main
 ```
-
-Open your browser to:
-👉 **`http://localhost:5001`**
-
-Both the frontend UI and the backend API are served seamlessly!
 
 ---
 
-### 2. Running the Backend Independently
+## Step 2 — Deploy the Backend (Web Service)
+
+1. In Render → **New → Web Service**
+2. Connect your GitHub repo
+3. Set the following:
+
+| Setting | Value |
+|---|---|
+| **Root Directory** | `backend` |
+| **Runtime** | `Node` |
+| **Build Command** | `npm install && npm run build` |
+| **Start Command** | `npm start` |
+
+4. Add **Environment Variables**:
+
+| Key | Value |
+|---|---|
+| `NODE_ENV` | `production` |
+| `PORT` | `10000` |
+| `JWT_SECRET` | *(Generate or set a strong secret)* |
+| `JWT_EXPIRES_IN` | `7d` |
+
+5. Click **Deploy**. Note your backend URL e.g. `https://securebypay-api.onrender.com`
+
+---
+
+## Step 3 — Rebuild Flutter with the Production API URL
+
+Once you know your backend URL, rebuild the Flutter web app:
 
 ```bash
-cd backend
-npm install
-npm run dev
+cd frontend
+flutter build web \
+  --release \
+  --no-tree-shake-icons \
+  --dart-define="API_BASE_URL=https://YOUR-BACKEND.onrender.com/api/v1"
 ```
 
-Server will run on `http://localhost:5001`.
-Health check: `http://localhost:5001/api/v1/health`
-
-### 3. Running Backend Tests
-
+Or use the provided script (edit the URL inside first):
 ```bash
-cd backend
-npm test
+API_BASE_URL=https://YOUR-BACKEND.onrender.com/api/v1 ./frontend/build.sh
 ```
 
-Expected output:
-```
-✔ GET /api/v1/health returns status ok
-✔ POST /api/v1/auth/register fails if required fields are missing
-✔ POST /api/v1/auth/register succeeds and issues token
-✔ POST /api/v1/auth/login works for seeded demo account
-✔ Protected routes reject requests without token
-✔ Protected routes accept valid token
-ℹ pass 6, fail 0
+Commit the new build:
+```bash
+git add frontend/build/web
+git commit -m "chore: production flutter build for Render"
+git push origin main
 ```
 
 ---
 
-## 🔑 Demo Credentials
+## Step 4 — Deploy the Frontend (Static Site)
 
-A default account is pre-seeded in the database for instant evaluation:
-- **Email**: `user@example.com`
-- **Password**: `Password123!`
+1. In Render → **New → Static Site**
+2. Connect the same GitHub repo
+3. Set the following:
 
-You can also use the **Create account** form to register any new user.
+| Setting | Value |
+|---|---|
+| **Root Directory** | `frontend/build/web` |
+| **Build Command** | *(leave empty)* |
+| **Publish Directory** | `.` |
 
----
+4. Under **Redirects/Rewrites**, add:
 
-## 📡 API Reference
+| Source | Destination | Action |
+|---|---|---|
+| `/*` | `/index.html` | Rewrite |
 
-Base URL: `http://localhost:5001/api/v1`
-
-### Authentication
-| Method | Endpoint | Description | Auth Required |
-|---|---|---|---|
-| `POST` | `/auth/register` | Register new user (firstName, lastName, email, phone, password) | No |
-| `POST` | `/auth/login` | Log in and receive JWT token + user profile | No |
-| `GET` | `/auth/me` | Fetch authenticated user profile | Yes (Bearer Token) |
-
-### Dashboard & Analytics
-| Method | Endpoint | Description | Auth Required |
-|---|---|---|---|
-| `GET` | `/dashboard/overview` | Fetch wallet balance, total shipments, exports, imports, trends | Yes |
-| `GET` | `/dashboard/growth?period=year` | Fetch growth curve data (`year`, `month`, `week`) | Yes |
-| `POST` | `/dashboard/wallet/fund` | Add funds to wallet balance (`amount`) | Yes |
-
-### Shipments
-| Method | Endpoint | Description | Auth Required |
-|---|---|---|---|
-| `GET` | `/shipments` | List all recent shipments | Yes |
-| `GET` | `/shipments/:id` | Get shipment details by ID / Tracking ID | Yes |
-| `POST` | `/shipments/:id/pay` | Pay for a shipment (updates status from Delayed to Paid) | Yes |
+5. Click **Deploy**
 
 ---
 
-## 🌐 Hosting & Deployment Instructions
+## Step 5 — Configure CORS (if needed)
 
-### Deploy to Render (Recommended for 1-Click Deployment)
-1. Push this repository to GitHub.
-2. Log into [Render.com](https://render.com) and click **New Web Service**.
-3. Connect your GitHub repository.
-4. Set the following configuration:
-   - **Environment**: `Node`
-   - **Build Command**: `npm install --prefix backend && npm run build --prefix backend`
-   - **Start Command**: `npm start`
-5. Click **Create Web Service**. Your live demo will be deployed with HTTPS automatically!
+If the frontend and backend are on different Render subdomains, update `backend/src/app.ts` to allow your frontend's Render URL:
 
-### Deploy to Railway
-1. Create a project in [Railway.app](https://railway.app) from your GitHub repo.
-2. Set start command: `npm start`.
+```typescript
+app.use(cors({
+  origin: ['https://securebypay-frontend.onrender.com'],
+  ...
+}));
+```
 
 ---
 
-## 📝 Assessment Submission Details
+## Blueprint Deployment (Automatic)
 
-- **Role**: Full Stack Developer
-- **Company**: SecureByPay
-- **Applicant**: Chukwu
-- **Candidate Email**: glory.okafor@securebypay.com
-- **Deadline**: 12:00 PM, Saturday, 26th September
+The `render.yaml` in the repo root defines both services. You can deploy both at once via:
+
+**Render Dashboard → New → Blueprint** → connect repo → Deploy
+
+---
+
+## Seed Data
+
+On first boot the backend auto-creates `backend/data/users.json` with two accounts:
+
+| Email | Password | Role |
+|---|---|---|
+| `user@example.com` | `Password123!` | user |
+| `admin@securebypay.com` | `Password123!` | admin |
+
+> ⚠️ **Note**: Render's free tier has ephemeral disk — `data/users.json` resets on each deploy. For persistent data, upgrade to a paid plan with a Disk mount, or migrate to a database.
