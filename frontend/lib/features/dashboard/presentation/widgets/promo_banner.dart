@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import '../../../../shared/widgets/app_icons.dart';
 
 /// Matches CSS: .promo-banner
 /// background: linear-gradient(overlay) + banner-bg.png + earth-boxes.svg
