@@ -11,7 +11,11 @@ class ApiService {
   factory ApiService() => _instance;
   ApiService._internal();
 
-  String baseUrl = 'http://localhost:5001/api/v1';
+  static const String _defaultBaseUrl = String.fromEnvironment(
+    'API_BASE_URL',
+    defaultValue: 'http://localhost:5001/api/v1',
+  );
+  String baseUrl = _defaultBaseUrl;
   String? _token;
   UserModel? currentUser;
 
